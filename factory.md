@@ -122,6 +122,38 @@ if __name__ == "__main__":
     print(f"Created user: {user.__class__.__name__} - {user.first_name} {user.last_name}")
 ```
 
+**Another Example**
+```python
+from abc import ABC, abstractmethod
+
+class PaymentProcessor(ABC):
+    @abstractmethod
+    def process_payment(self):
+        pass
+
+class PayPalProcessor(PaymentProcessor):
+    def process_payment(self):
+        print("Processing payment with PayPal!")
+
+class StripeProcessor(PaymentProcessor):
+    def process_payment(self):
+        print("Processing payment with Stripe!")
+
+def create_processor(processor_type):
+    if processor_type == "paypal":
+        return PayPalProcessor()
+    elif processor_type == "stripe":
+        return StripeProcessor()
+    else:
+        raise ValueError("Unknown processor type")
+
+if __name__ == "__main__":
+    paypal = create_processor("paypal")
+    paypal.process_payment()
+
+    stripe = create_processor("stripe")
+    stripe.process_payment()
+```
 **Pros:**
 1. Follows the Open-Closed Principle (add new factories without modifying existing code).
 2. Reusable across different types of objects.
@@ -143,3 +175,130 @@ User user = factory.createUser("John", "Doe");
 Abstract Factory is about creating families of related objects without specifying their concrete classes.
 
 Instead of a single method, an Abstract Factory has multiple factory methods — one for each type of object in the family.
+
+**Definition**
+
+The Abstract Factory pattern provides an interface for creating families of related or dependent objects without specifying their concrete classes. For example, consider a cross-platform drawing application where each platform (Windows, macOS, Linux) has its unique implementation of UI components such as buttons and checkboxes. The Abstract Factory ensures that when a Windows button is created, it is paired with a Windows checkbox, maintaining consistency without the need for the client code to specify concrete implementations.
+
+<img width="2131" height="266" alt="image" src="https://github.com/user-attachments/assets/f05bf402-5246-45e4-86c2-822e542d96a7" />
+
+
+**Example**
+```python
+from abc import ABC, abstractmethod
+
+# Abstract Product Interfaces
+class ProductCatalog(ABC):
+    @abstractmethod
+    def display(self):
+        pass
+
+class ShoppingCart(ABC):
+    @abstractmethod
+    def add_item(self):
+        pass
+
+    @abstractmethod
+    def display_cart(self):
+        pass
+
+class PaymentGateway(ABC):
+    @abstractmethod
+    def process_payment(self):
+        pass
+
+# Concrete Products for Online Store
+class OnlineProductCatalog(ProductCatalog):
+    def display(self):
+        print("Displaying online product catalog.")
+
+class OnlineShoppingCart(ShoppingCart):
+    def add_item(self):
+        print("Adding item to online shopping cart.")
+
+    def display_cart(self):
+        print("Displaying online shopping cart.")
+
+class OnlinePaymentGateway(PaymentGateway):
+    def process_payment(self):
+        print("Processing payment through online gateway.")
+
+# Concrete Products for Wholesale
+class WholesaleProductCatalog(ProductCatalog):
+    def display(self):
+        print("Displaying wholesale product catalog.")
+
+class WholesaleShoppingCart(ShoppingCart):
+    def add_item(self):
+        print("Adding item to wholesale shopping cart.")
+
+    def display_cart(self):
+        print("Displaying wholesale shopping cart.")
+
+class WholesalePaymentGateway(PaymentGateway):
+    def process_payment(self):
+        print("Processing payment through wholesale gateway.")
+
+# Abstract Factory
+class ECommerceFactory(ABC):
+    @abstractmethod
+    def create_product_catalog(self):
+        pass
+
+    @abstractmethod
+    def create_shopping_cart(self):
+        pass
+
+    @abstractmethod
+    def create_payment_gateway(self):
+        pass
+
+# Concrete Factories
+class OnlineStoreFactory(ECommerceFactory):
+    def create_product_catalog(self):
+        return OnlineProductCatalog()
+
+    def create_shopping_cart(self):
+        return OnlineShoppingCart()
+
+    def create_payment_gateway(self):
+        return OnlinePaymentGateway()
+
+class WholesaleFactory(ECommerceFactory):
+    def create_product_catalog(self):
+        return WholesaleProductCatalog()
+
+    def create_shopping_cart(self):
+        return WholesaleShoppingCart()
+
+    def create_payment_gateway(self):
+        return WholesalePaymentGateway()
+
+# Client
+class ECommerceApplication:
+    def __init__(self, factory: ECommerceFactory):
+        self.catalog = factory.create_product_catalog()
+        self.cart = factory.create_shopping_cart()
+        self.gateway = factory.create_payment_gateway()
+
+    def run(self):
+        self.catalog.display()
+        self.cart.add_item()
+        self.cart.display_cart()
+        self.gateway.process_payment()
+
+if __name__ == "__main__":
+    factory = OnlineStoreFactory()  # Or WholesaleFactory()
+    app = ECommerceApplication(factory)
+    app.run()
+```
+
+**Pros:**
+1. Ensures consistency among related objects.
+2. Makes it easy to swap entire families of objects.
+3. Isolates concrete classes from client code.
+
+
+**Cons:**
+1. Can be complex to implement due to multiple factory and product classes.
+2. Adding new products requires updating the abstract factory interface and all concrete factories.
