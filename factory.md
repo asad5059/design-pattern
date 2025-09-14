@@ -97,7 +97,7 @@ if __name__ == "__main__":
 The Factory Method Pattern moves the responsibility of object creation to subclasses. Instead of a static method, it defines an abstract method in a base class (or interface) that concrete subclasses implement to create specific objects. This makes the pattern extensible and reusable.
 
 **Example**
-```
+```python
 from abc import ABC, abstractmethod
 
 # Abstract Factory
