@@ -51,14 +51,20 @@ It's a principle where we say Software entities (classes, modules, functions) sh
 
 
 ### Decorator Pattern
+The Decorator pattern is a structural design pattern that allows us to enhance or modify the behavior of objects at runtime. It achieves this by creating a set of decorator classes that are used to wrap concrete components. Each decorator adds a specific feature or behavior to the component, and we can stack multiple decorators to create various combinations.
 
+**When to Use the Decorator Pattern**
+1. Adding New Features
+2. Avoiding Messy Code (E.g.: Class Explotion)
+3. Make program follow OCD
+
+**Example**
 1. Take a DarkRoast object
 2. Decorate it with a Mocha object
 3. Decorate it with a Whip object
 4. Call the cost() method and rely on delegation to add on the condiment costs
 
-#### Code
-
+**Code**
 ```python
 from abc import ABC, abstractmethod
 
