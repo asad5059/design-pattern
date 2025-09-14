@@ -36,9 +36,10 @@ A design pattern is defined as:
 Key points here: <br>
 ✅ It must solve a recurring problem <br>
 ✅ It must be general enough to be applied in different contexts <br>
-✅ It must have named participants/structure (so developers can discuss it) <br>
 
 A Simple Factory is just a single function or class that decides which concrete class to instantiate and return, based on some input (usually parameters). It does not solve the reusability in a true manner. So, it's not a true design pattern, but a programming paradigm.
+
+> It breaks Open-Closed Principle (Open to extension, closed to modification) as we need to modify the decider method to determine which class to use. Also, some existing class in the decider method can be deleted as well.
 
 **Example**
 ```python
