@@ -1,3 +1,14 @@
+```python
+payment_getway = None
+
+if condition_1:
+   payment_getway = Paypal()
+elif condition_2:
+   payment_getway = Stripe()
+else:
+   payment_getway = Sslcommerze()
+```
+
 ### Why factory design pattern?
 * No tightly coupling client code to any other specific concrete classes
 * Which class will be instantiated is generally decided in runtime
