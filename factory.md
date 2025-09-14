@@ -79,3 +79,54 @@ if __name__ == "__main__":
     print(f"Created user: {user.__class__.__name__} - {user.first_name} {user.last_name}")
 
 ```
+
+**How it works?**
+1. The client code calls UserFactory.create_user(UserRole.TEACHER) to get a Teacher object without knowing the Teacher class.
+2. The factory uses a ```if-else``` statement to decide which class to instantiate.
+
+**Pros:**
+1. Simple to implement.
+2. Centralizes object creation logic.
+
+**Cons:**
+1. Violates the Open-Closed Principle (we must modify the factory to add new types).
+2. Not reusable for creating other types of objects.
+
+
+### Factory Method: Extensible and Reusable
+The Factory Method Pattern moves the responsibility of object creation to subclasses. Instead of a static method, it defines an abstract method in a base class (or interface) that concrete subclasses implement to create specific objects. This makes the pattern extensible and reusable.
+
+**Example**
+```
+from abc import ABC, abstractmethod
+
+# Abstract Factory
+class UserFactory(ABC):
+    @abstractmethod
+    def create_user(self, first_name, last_name):
+        pass
+
+# Concrete Factories
+class StudentFactory(UserFactory):
+    def create_user(self, first_name, last_name):
+        return Student(first_name, last_name)
+
+class TeacherFactory(UserFactory):
+    def create_user(self, first_name, last_name):
+        return Teacher(first_name, last_name)
+
+# Usage
+if __name__ == "__main__":
+    factory = StudentFactory()
+    user = factory.create_user("John", "Doe")
+    print(f"Created user: {user.__class__.__name__} - {user.first_name} {user.last_name}")
+```
+
+**Pros:**
+1. Follows the Open-Closed Principle (add new factories without modifying existing code).
+2. Reusable across different types of objects.
+3. Reduces coupling between client code and concrete classes.
+
+**Cons:**
+Requires creating new factory classes for each product type, which can increase complexity.
+
