@@ -130,3 +130,16 @@ if __name__ == "__main__":
 **Cons:**
 Requires creating new factory classes for each product type, which can increase complexity.
 
+### Abstract Factory
+
+**Difference between factory and abstract factory**
+Factory Method is about defining a single method (usually abstract) for creating one kind of object — and letting subclasses decide which exact concrete class to instantiate.
+
+```
+UserFactory factory = new StudentFactory();
+User user = factory.createUser("John", "Doe");
+```
+
+Abstract Factory is about creating families of related objects without specifying their concrete classes.
+
+Instead of a single method, an Abstract Factory has multiple factory methods — one for each type of object in the family.
