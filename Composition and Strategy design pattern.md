@@ -170,3 +170,102 @@ mallard.perform_fly()  # "I can't fly..."
 * Both are crucial tools for writing flexible, maintainable, and extensible code.
 
 ---
+
+## QnA
+> I still didn't get it. We are injecting fly behavior in a same manner as we are injecting engine in a car. So, what's the catch here?
+
+💡 **You’ve hit the core of the confusion** — and this is where most people get stuck when first learning patterns.
+You’re right: injecting `fly_behavior` into `Duck` **feels exactly the same** as injecting `engine` into `Car`.
+
+The **difference is not in the mechanics** (yes, both use composition!) —
+the **difference is in the *intent*** and the *problem being solved*.
+
+Lets go this step by step:
+
+---
+
+## 🔑 1. Both Use the Same Technique
+
+Yes — in both cases:
+
+* We **compose** objects together (Car has Engine, Duck has FlyBehavior)
+* We **can swap** the component (change engine, change fly behavior)
+* We may even use **interfaces + polymorphism** to make them interchangeable
+
+So mechanically, they’re the same.
+But patterns are not about syntax — they’re about **design intent**.
+
+---
+
+## 🎯 2. The Catch: *Why* We’re Doing It
+
+| **Car + Engine** (General Composition)                                      | **Duck + FlyBehavior** (Strategy Pattern)                                          |
+| --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Purpose: represent a **real-world object** accurately (a car has an engine) | Purpose: represent a **family of algorithms/behaviors** that can vary              |
+| Behavior is usually **intrinsic** (car must have one engine)                | Behavior is **optional/dynamic** (duck can fly with wings, jetpack, or not at all) |
+| Swapping engine is **rare** (not common in runtime logic)                   | Swapping behavior is **expected** (may happen often at runtime)                    |
+| No formal “pattern” — just good OOP                                         | Follows a **pattern recipe**: Context + Strategy Interface + Concrete Strategies   |
+| Main goal: **object modeling**                                              | Main goal: **algorithm/behavior flexibility**                                      |
+
+---
+
+### 👀 The Key Catch
+
+> **Strategy Pattern is composition with a specific goal:**
+> **Encapsulating a family of interchangeable behaviors and allowing them to vary independently from the object that uses them.**
+
+A car doesn’t really need a *family of interchangeable engines at runtime*.
+But a Duck Simulator **needs to be able to switch fly behaviors** dynamically (and easily add new ones without modifying Duck).
+
+---
+
+## 🧠 Another Perspective
+
+Let’s step away from ducks and cars for a second and look at a clearer case:
+
+### Example: Sorting Algorithms
+
+```python
+class SortStrategy:
+    def sort(self, data): pass
+
+class BubbleSort(SortStrategy):
+    def sort(self, data): print("Bubble sort")
+
+class QuickSort(SortStrategy):
+    def sort(self, data): print("Quick sort")
+
+class SortContext:
+    def __init__(self, strategy: SortStrategy):
+        self.strategy = strategy
+
+    def set_strategy(self, strategy: SortStrategy):
+        self.strategy = strategy
+
+    def sort(self, data):
+        self.strategy.sort(data)
+
+# Usage
+data = [5, 3, 1]
+ctx = SortContext(BubbleSort())
+ctx.sort(data)  # Bubble sort
+ctx.set_strategy(QuickSort())  # Switch algorithm
+ctx.sort(data)  # Quick sort
+```
+
+Here, **the entire purpose** of the pattern is to **swap sorting algorithms** dynamically —
+that’s the *catch*: **it’s solving the problem of interchangeable algorithms.**
+
+---
+
+## 🔍 TL;DR
+
+* **Composition = HOW** we inject a part into another class.
+* **Strategy Pattern = WHY** we do it (to make behaviors interchangeable, extensible, and swappable at runtime).
+
+Think of it like this:
+
+* Injecting an engine → just modeling reality (composition).
+* Injecting a fly behavior → making behavior flexible by design (strategy pattern).
+
+---
