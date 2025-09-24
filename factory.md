@@ -138,11 +138,13 @@ if __name__ == "__main__":
 ```python
 from abc import ABC, abstractmethod
 
+# Product interface
 class PaymentProcessor(ABC):
     @abstractmethod
     def process_payment(self):
         pass
 
+# Concrete Products
 class PayPalProcessor(PaymentProcessor):
     def process_payment(self):
         print("Processing payment with PayPal!")
@@ -151,20 +153,36 @@ class StripeProcessor(PaymentProcessor):
     def process_payment(self):
         print("Processing payment with Stripe!")
 
-def create_processor(processor_type):
-    if processor_type == "paypal":
+
+# Creator (abstract factory)
+class PaymentProcessorFactory(ABC):
+    @abstractmethod
+    def create_processor(self) -> PaymentProcessor:
+        pass
+
+
+# Concrete Factories
+class PayPalFactory(PaymentProcessorFactory):
+    def create_processor(self) -> PaymentProcessor:
         return PayPalProcessor()
-    elif processor_type == "stripe":
+
+
+class StripeFactory(PaymentProcessorFactory):
+    def create_processor(self) -> PaymentProcessor:
         return StripeProcessor()
-    else:
-        raise ValueError("Unknown processor type")
 
+
+# Usage
 if __name__ == "__main__":
-    paypal = create_processor("paypal")
-    paypal.process_payment()
+    # Client code depends only on the abstract factory
+    paypal_factory = PayPalFactory()
+    paypal_processor = paypal_factory.create_processor()
+    paypal_processor.process_payment()
 
-    stripe = create_processor("stripe")
-    stripe.process_payment()
+    stripe_factory = StripeFactory()
+    stripe_processor = stripe_factory.create_processor()
+    stripe_processor.process_payment()
+
 ```
 **Pros:**
 1. Follows the Open-Closed Principle (add new factories without modifying existing code).
