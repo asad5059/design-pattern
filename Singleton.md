@@ -51,3 +51,14 @@ class Singleton:
 # Usage
 singleton_instance = Singleton.get_instance()
 ```
+
+## Pros and Cons
+|      Pros                                                                                      | Cons                                                                                                |
+| ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Guarantees a **single instance** across the application.                                       | Often **violates Single Responsibility Principle (SRP)** by mixing logic with lifecycle management. |
+| Provides a **global access point** to shared resources like loggers or configuration managers. | Creates **tight coupling** and **hidden dependencies** between components.                          |
+| Enables **lazy initialization** — instance created only when needed.                           | **Not thread-safe** by default; requires locks or special handling.                                 |
+| Ensures **consistent state** across the app (e.g., shared configuration).                      | **Hard to test and mock** in unit tests — can’t easily reset or replace the instance.               |
+| Simplifies **resource management** (e.g., DB connections, caches).                             | Can act like a **global variable**, making debugging and maintenance harder.                        |
+
+
