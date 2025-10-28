@@ -5,3 +5,4 @@ This repository contains my notes, examples, and code snippets for common design
 2. https://medium.com/@surajofficeemail/understanding-the-factory-design-pattern-a-beginners-guide-599051debfb2
 3. https://medium.com/@mail2mhossain/explained-factory-method-and-abstract-factory-design-patterns-9cffdd3ef929
 4. https://medium.com/@minuray10/singleton-design-pattern-in-python-47d90fd27365
+5. https://refactoring.guru/design-patterns/command
