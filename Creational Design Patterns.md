@@ -200,6 +200,33 @@ We will never accidentally mix GCP storage with AWS auth — each factory only p
 
 **Separates the construction of a complex object into explicit steps, producing it only when done.**
 
+```java
+class User {
+    String name;
+    String email;
+    String phone;
+    String address;
+    String company;
+    String website;
+}
+
+User user = new User(
+    "Mosleh",
+    "abc@gmail.com",
+    "017...",
+    "Chattogram",
+    "ABC Ltd",
+    "abc.com"
+);
+
+User user =
+    new UserBuilder()
+        .name("Mosleh")
+        .email("abc@gmail.com")
+        .phone("017...")
+        .build();
+```
+
 ```python
 class QueryBuilder:
     def __init__(self):
