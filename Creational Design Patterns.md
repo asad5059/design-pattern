@@ -87,39 +87,52 @@ No matter how many times we call `Config()`, we get the same object back.
 ```python
 from abc import ABC, abstractmethod
 
-class Notifier(ABC):
+# Product interface
+class PaymentProcessor(ABC):
     @abstractmethod
-    def send(self, message: str): pass
+    def process_payment(self):
+        pass
 
-class EmailNotifier(Notifier):
-    def send(self, message): print(f"Email: {message}")
+# Concrete Products
+class PayPalProcessor(PaymentProcessor):
+    def process_payment(self):
+        print("Processing payment with PayPal!")
 
-class SMSNotifier(Notifier):
-    def send(self, message): print(f"SMS: {message}")
+class StripeProcessor(PaymentProcessor):
+    def process_payment(self):
+        print("Processing payment with Stripe!")
 
-class NotifierFactory(ABC):
+
+# Creator (abstract factory)
+class PaymentProcessorFactory(ABC):
     @abstractmethod
-    def create_notifier(self) -> Notifier: pass  # <-- Factory Method
+    def create_processor(self) -> PaymentProcessor:
+        pass
 
-    def notify(self, message):
-        notifier = self.create_notifier()
-        notifier.send(message)
 
-class EmailFactory(NotifierFactory):
-    def create_notifier(self): return EmailNotifier()
+# Concrete Factories
+class PayPalFactory(PaymentProcessorFactory):
+    def create_processor(self) -> PaymentProcessor:
+        return PayPalProcessor()
 
-class SMSFactory(NotifierFactory):
-    def create_notifier(self): return SMSNotifier()
+
+class StripeFactory(PaymentProcessorFactory):
+    def create_processor(self) -> PaymentProcessor:
+        return StripeProcessor()
+
 
 # Usage
-factory = SMSFactory()
-factory.notify("Your OTP is 4821")  # SMS: Your OTP is 4821
+if __name__ == "__main__":
+    # Client code depends only on the abstract factory
+    paypal_factory = PayPalFactory()
+    paypal_processor = paypal_factory.create_processor()
+    paypal_processor.process_payment()
+
+    stripe_factory = StripeFactory()
+    stripe_processor = stripe_factory.create_processor()
+    stripe_processor.process_payment()
+
 ```
-
-The `notify()` method in the base class never mentions `EmailNotifier` or `SMSNotifier`. The subclass decides.
-
-**Why it's creational:** The calling code works with the abstract `Notifier` interface, with no knowledge of which concrete type it gets. Adding a `PushNotifier` later requires zero changes to existing code — we just add a new subclass. The pattern delegates the *which* of object creation to child classes.
-
 ---
 
 ### 3. Abstract Factory
